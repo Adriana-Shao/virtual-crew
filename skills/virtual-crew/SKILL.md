@@ -1,6 +1,6 @@
 ---
 name: virtual-crew
-description: "Orchestrator for an AI film production crew: routes each shot through continuity (world-state), art department (style + assets), QC (failure catalogue) and the ethics gate, then holds the two human gates (approve the prompt; judge the clip) and drives the full loop — look up shot → draft → approve → generate → download → watch-list → structured comparison → v2 → approve/reject → archive. Use when producing shots for an AI-generated film, when asked to write the next shot's prompt, or when a generated clip needs to be checked and archived. AIGC 短片制作的总调度：按镜号走完整回合，含两处人工确认。"
+description: "Orchestrator for an AI film production crew. Stage A: extract the asset layer from the script and storyboard (character identities and variants, four directional views per location, props) into an asset document in the project folder. Stage B: per shot, route through continuity (world-state), art department (style + assets), QC (failure catalogue) and the ethics gate, then hold the two human gates (approve the prompt; judge the clip) and run the loop — look up shot → draft → approve → the director generates → watch-list → structured comparison → v(n+1) → approve/reject → write state back → log → triage the feedback into the owning skill. Use when starting an AI-generated film, when asked for asset prompts or a shot's prompt, or when a reported problem has to be classified and written into the skills. AIGC 短片制作的资产+镜头总调度，含两处人工确认与反馈归档。"
 version: 0.1.0
 license: MIT
 platforms: [linux, macos, windows]
@@ -16,10 +16,16 @@ This skill is the dispatcher. It does not write anything itself: it runs the ord
 
 ## Preconditions
 
-1. `project-profile.yaml` exists in the project root and lists: sources, shotlist, world-state, assets, look, generation command, folders, naming, content policy.
+1. `project-profile.yaml` exists in the project root and lists: sources, shotlist, world-state, assets, look, generation driver, folders, naming, content policy.
 2. `shotlist.md` and `world_state.yaml` exist (build them with `scripts/build_project.py` if they do not).
 
-## The loop — run in this order, every shot
+## Stage A — assets first (once per film, before any shot prompt)
+
+1. Run `scripts/extract_assets.py` on the script + storyboard → `assets_inventory.md` (characters with variant clues, the scene list, props ranked by frequency).
+2. Load `asset-forge`: write the asset document into the project folder, using `templates/asset-prompt-document.md` — character identities, **one prompt per variant** (every wardrobe or face change gets its own), **four directional prompts per location** (N/E/S/W, with a layout note so the four views cannot contradict each other), and prop prompts.
+3. Hand it over and stop. The director generates the plates one at a time. Shot work does not begin until the plates a shot needs exist.
+
+## Stage B — the per-shot loop (run in this order, every shot)
 
 1. **Route by shot id.** Read the profile; locate the shot in `shotlist.md`. Missing → report what is missing, stop.
 2. **Continuity** (`continuity-supervisor`): read the world-state, emit the "must be re-described in full" list, name the active variants, name the inherited state.
@@ -34,6 +40,7 @@ This skill is the dispatcher. It does not write anything itself: it runs the ord
 11. **Next version.** Prompt v(n+1) with a short change list, back to step 7. Take numbers never reuse.
 12. **On approval.** Director says usable → write the shot's ending state back into the world-state, update the shotlist status.
 13. **Log.** Every take appended to `shot_log.csv`: outcome, failure types, attribution. On request, report rework rounds, failure-type ranking and the high-risk forecast for upcoming shots.
+14. **Triage.** Classify every problem the director reports and write it into the skill that owns it — `references/feedback-triage.md` says which. Answering in chat alone does not count: the entry has to land in the file, and be re-read to confirm.
 
 ## Standing rules
 

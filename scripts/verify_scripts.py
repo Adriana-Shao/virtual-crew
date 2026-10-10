@@ -20,6 +20,7 @@ import zipfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import build_project as BP          # noqa: E402
+import extract_assets as EX         # noqa: E402
 import prompt_lint as PL            # noqa: E402
 import shot_log as SL               # noqa: E402
 
@@ -104,6 +105,21 @@ try:
     except SystemExit as e:
         rc = e.code
     check("lint: CLI exits 0 on a clean prompt", rc == 0, str(rc))
+
+    # ── extract_assets ───────────────────────────────────────────────────────
+    sc = [{"id": "sc1", "name": "x", "time": "夜", "place": "外",
+           "shots": [{"n": "1", "content": "陈宇光着上身站在门边", "perf": ""},
+                     {"n": "2", "content": "他的钱包放在台阶上。", "perf": ""}]}]
+    ch = [{"name": "陈宇", "age": "18", "bio": ""}, {"name": "文渔", "age": "48", "bio": ""}]
+    pc, un, rows_, props, first = EX.build(sc, ch, [])
+    check("assets: clue credited to the nearest name",
+          ("sc1-shot1", "光着上身") in pc["陈宇"].get("身体状态", []), str(dict(pc)))
+    check("assets: unnamed clue goes to triage, not to a character",
+          any("钱包" in t for _, _, t in un) and not pc["文渔"], str(un[:3]))
+    check("assets: props ranked with first appearance",
+          props["钱包"] == 1 and first["钱包"] == "sc1-shot2", str(dict(props)))
+    inv_path = EX.write_inventory(out, "t", ch, (pc, un, rows_, props, first), len(sc))
+    check("assets: inventory document written", os.path.exists(inv_path))
 
     # ── shot_log ─────────────────────────────────────────────────────────────
     log = os.path.join(tmp, "shot_log.csv")

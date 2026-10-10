@@ -9,6 +9,7 @@ Most AI-film workflows demo a model. This one documents the **method**: how a sh
 
 | Skill | Role | What it owns |
 |---|---|---|
+| `asset-forge` | 造型/置景 | Stage one: from the script + storyboard, extracts character assets (a new prompt for every wardrobe or face change), scene assets **with four directional views per location** (so no camera angle drifts), and prop assets — and writes them into one asset document in the project folder. |
 | `continuity-supervisor` | 场记 | The world-state: who is where, in what wardrobe, holding what, under which light, and which set facts may not drift. Expands continuity into fully re-described prompt sections (models have no memory of previous shots). Flags drift after generation. |
 | `art-department` | 美术指导 | Style DNA (palette / era / single-light rule), the asset list a shot needs, which reference plates are missing, and style drift or anachronism in generated frames. |
 | `qc-reviewer` | 审片 | Static pre-flight check of a prompt against a catalogue of observed model failure modes, with rewritten lines. |
