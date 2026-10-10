@@ -53,10 +53,18 @@ Contents:
 
 ## Rules
 
+- **Two tiers, and each tier writes only its own tier.** The identity prompt spends all its words on
+  the face — bone structure, brow, eyes (shape, spacing, lids, bags), nose, mouth, chin, skin, hair,
+  body, hands, and the marks that make this face unmistakable (a mole, a scar, missing teeth, a
+  weathered patch). Detail it until a *different* model would draw the same person.
+- **A variant prompt describes the delta only.** Wardrobe, body state (soaked, beaten, bound), hair
+  change — and then one line: "face, bone structure, hair and build strictly copy the uploaded
+  identity plate, same person, unchanged". Never re-describe the face in a variant: repeating it
+  invites the generator to drift, and rewriting it per variant is how you end up with different faces.
+- **The identity plate is the anchor the director uploads.** Say so in the variant: the workflow is
+  generate the identity first, then attach that image and change the clothes.
 - **Every prompt carries the same style/light band, verbatim.** Assets that disagree on palette make
   every later shot a colour-matching problem.
-- **A variant is a new prompt, not a note.** "He is soaked in this scene" is not enough: write the
-  soaked variant out in full, or the plate will be guessed.
 - **Four directions means four prompts that agree.** Write the layout note first, then the four views
   against it; a room whose door moves between views is worse than a room with no reference at all.
 - **Every entry stands alone.** No "same as above", no "same as B3", no cross-references between
