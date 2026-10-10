@@ -23,7 +23,7 @@ This skill is the dispatcher. It does not write anything itself: it runs the ord
 
 1. Run `scripts/extract_assets.py` on the script + storyboard → `assets_inventory.md` (characters with variant clues, the scene list, props ranked by frequency).
 2. Load `asset-forge`: write the asset document into the project folder, using `templates/asset-prompt-document.md` — character identities, **one prompt per variant** (every wardrobe or face change gets its own), **four directional prompts per location** (N/E/S/W, with a layout note so the four views cannot contradict each other), and prop prompts.
-3. Hand it over and stop. The director generates the plates one at a time. Shot work does not begin until the plates a shot needs exist.
+3. Hand it over and stop. Deliver as **markdown + Word** (`scripts/md_to_docx.py`) into the project's asset folder, so the director can copy prompts straight out of Word. The director generates the plates one at a time. Shot work does not begin until the plates a shot needs exist.
 
 ## Stage B — the per-shot loop (run in this order, every shot)
 

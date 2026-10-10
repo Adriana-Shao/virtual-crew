@@ -57,6 +57,7 @@ make lint         # syntax-check the scripts
 skills/           the five crew roles (SKILL.md + references/)
 templates/        prompt skeleton, QC checklist, watch-list, report templates, world-state template
 scripts/          build_project.py (parse script+storyboard → shotlist + world-state skeleton)
+                  extract_assets.py (→ asset inventory) · md_to_docx.py (Word copy for the director)
                   prompt_lint.py · continuity_diff.py · shot_log.py
 examples/         the-visitor/ — a small fictional project showing the data layer
 assets/           before-after/ (failure vs fixed frames) · demo/

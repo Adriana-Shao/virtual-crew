@@ -30,7 +30,12 @@ first and stops for approval.
 
 ## Outputs — one document, saved to the project folder
 
-`assets_prompts.md` (structure in `templates/asset-prompt-document.md`), containing:
+A dedicated folder in the project (e.g. `资产提取/` for a Chinese-language project), holding **both**:
+
+- `assets_prompts.md` — the working copy (this is what the crew edits; structure in `templates/asset-prompt-document.md`)
+- `assets_prompts.docx` — the Word copy for the director, generated with `scripts/md_to_docx.py`, so prompts can be copied straight out of Word. Regenerate it every time the markdown changes; never hand-edit the docx.
+
+Contents:
 
 1. **Character assets** — one prompt per *identity* (the face, the body, the standing look), plus a
    **separate prompt for every variant** the story allows: a change of outfit, a change of body

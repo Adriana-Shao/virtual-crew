@@ -12,6 +12,7 @@ import csv
 import contextlib
 import io
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -21,6 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import build_project as BP          # noqa: E402
 import extract_assets as EX         # noqa: E402
+import md_to_docx as MD             # noqa: E402
 import prompt_lint as PL            # noqa: E402
 import shot_log as SL               # noqa: E402
 
@@ -120,6 +122,22 @@ try:
           props["钱包"] == 1 and first["钱包"] == "sc1-shot2", str(dict(props)))
     inv_path = EX.write_inventory(out, "t", ch, (pc, un, rows_, props, first), len(sc))
     check("assets: inventory document written", os.path.exists(inv_path))
+
+    # ── md_to_docx ───────────────────────────────────────────────────────────
+    md = os.path.join(tmp, "doc.md")
+    open(md, "w", encoding="utf-8").write(
+        "# T\n\n## H\n\n### P\n\n- item **bold**\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n> quote\n")
+    dx = MD.convert(md, os.path.join(tmp, "doc.docx"))
+    with zipfile.ZipFile(dx) as z:
+        names = set(z.namelist())
+        xml = z.read("word/document.xml").decode("utf-8")
+    check("docx: valid package parts",
+          {"[Content_Types].xml", "word/document.xml", "word/styles.xml"} <= names, str(sorted(names)))
+    check("docx: headings, table, bold, quote rendered",
+          "Heading1" in xml and "Heading3" in xml and "<w:tbl>" in xml and "<w:b/>" in xml, xml[:200])
+    plain = re.sub(r"<[^>]+>", "", xml)
+    check("docx: text round-trips", "T" in plain and "bold" in plain and "quote" in plain, plain[:120])
+    check("docx: CJK-safe fonts in styles", "SimSun" in zipfile.ZipFile(dx).read("word/styles.xml").decode())
 
     # ── shot_log ─────────────────────────────────────────────────────────────
     log = os.path.join(tmp, "shot_log.csv")
