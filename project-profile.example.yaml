@@ -1,0 +1,65 @@
+# project-profile.yaml — one file per film. Copy to <your-project>/project-profile.yaml
+# Everything project-specific lives here so the skills stay generic.
+
+project:
+  name: the-visitor                 # project codename
+  dir: /abs/path/to/project         # project root
+  language: en                      # zh | en — working language of prompts and reports
+
+sources:
+  script: sources/script.docx       # literary script (plot, dialogue, character bios)
+  storyboard: sources/storyboard.docx  # shot table (shot no. / framing / camera / duration / sound)
+  precedence: |                     # how to resolve contradictions
+    decisions-file first, then script for plot and dialogue,
+    then storyboard for framing/camera/duration/sound, then assets/reference images.
+  decisions: decisions.yaml         # director's deliberate deviations from the script (if any)
+
+shotlist:
+  file: shotlist.md
+  id_format: "sc{scene}-shot{shot}"     # e.g. sc1-shot11
+  statuses: [todo, drafted, generated, approved, excluded]
+
+world_state:
+  file: world_state.yaml
+  layers: [identity, variants, state_by_shot]   # see skills/continuity-supervisor/references/world-state-format.md
+
+assets:
+  table: assets.md                  # character/scene/prop plates and their ids, if any
+  dir: 02_assets
+  rules:
+    - "Character likeness always: strictly copy the uploaded asset."
+    - "Single-person shots: attach exactly one reference plate."
+
+look:
+  era: ""                           # e.g. "1990s realism, cold desaturated palette"
+  palette: ""
+  light_rule: "single light source per shot; no second source, no beam, no flare in eyes"
+  audio_band: "no music, no score, no melody; no subtitles, no watermark, no logo"
+
+generation:
+  # Leave empty to keep the crew at "prompt + reports" (recommended default).
+  command: ""                       # e.g. my-video-cli generate --image {assets} --prompt {prompt} --duration {seconds} --model seedance2.0_fast_vision
+  poll_command: ""                  # e.g. my-video-cli query-result --thread-id {thread} --run-id {run}
+  model: ""
+  ratio: "16:9"
+  resolution: "720p"
+  duration_cap_seconds: 15
+  require_gate1: true               # never generate an unapproved prompt
+
+folders:
+  pending: 04_out/pending           # freshly generated, undecided
+  usable: 04_out/usable             # director-approved, named <scene>-shot<N>
+  rejected: 04_out/rejected         # director-rejected, take number kept
+  reports: 04_out/reports
+  deliverables: 05_final
+
+naming:
+  generated: "sc{scene}_s{shot}_take{take}.mp4"
+  approved: "sc{scene}-shot{shot}.mp4"
+  prompt: "sc{scene}-shot{shot}.md"
+  watchlist: "sc{scene}_s{shot}_take{take}-checklist.md"
+  report: "sc{scene}_s{shot}_take{take}-qc.md"
+
+content_policy:
+  file: content_policy.md           # project-specific boundaries and non-depicting alternatives
+  gate_required: true

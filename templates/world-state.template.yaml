@@ -1,0 +1,67 @@
+# world_state.template.yaml — copy into the project and fill as you go
+# Three layers: identity (never changes) · variants (change with events) · state_by_shot (position & facing)
+# Read before writing every prompt. Write back only after a take is approved.
+
+version: 1
+project: ""
+updated: ""
+
+# How to resolve contradictions between sources.
+precedence:
+  - decisions file (director's deliberate deviations) first
+  - then the script for plot and dialogue
+  - then the storyboard for framing, camera, duration, sound
+  - then assets and reference images (a likeness always wins over prose)
+
+global_look:
+  era: ""
+  palette: ""
+  ratio: "16:9"
+  model: ""
+  camera_style: ""            # e.g. handheld realism unless stated
+  light_rule: "one source per shot; no second source, no local highlight, no beam, no flare in the eyes"
+  audio_band: "no music, no score, no melody; no subtitles, no watermark, no logo"
+
+decisions: []                 # [{topic, ruling, why, deviates_from_script: true/false}]
+
+scenes:
+  - id: sc1
+    name: ""
+    time: ""
+    place: ""                 # interior | exterior
+    established_facts: []     # door form, floor, furniture count, light
+    must_not_drift: []        # the facts that have burned you before
+    boundary: ""              # if this scene is not depicted at all, say so here
+
+characters:
+  <character_id>:
+    identity:
+      age: ""
+      role: ""
+      body: ""
+      hair: ""
+      permanent_marks: []
+      likeness_assets: []
+      voice_assets: []
+    variants:
+      V01_<slug>:
+        wardrobe_paragraph: ""      # canonical — paste verbatim into prompts
+        body_state: ""
+        restraints: ""
+        props_held: []
+        attach_assets: []
+        used_in: []
+    state_by_shot: {}               # {sc1-shot11: {variant, position, facing, hands}}
+
+props:
+  - id: ""
+    owner: ""
+    state: ""
+    rule: ""                        # what it is, what it is not, what may never happen to it
+
+events_done: []                     # ordered continuity facts later shots inherit
+not_revealed_to_audience: []
+
+content_policy:
+  file: content_policy.md
+  ruled_out: []                     # recorded decisions: what is not depicted, and the alternative used

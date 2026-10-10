@@ -1,0 +1,106 @@
+# world_state.yaml — The Visitor (fictional example)
+# identity (never changes) · variants (change with events) · state_by_shot (position & facing)
+
+version: 1
+project: "The Visitor"
+updated: "2026-09-21"
+
+precedence:
+  - decisions file first, then the script for plot and dialogue,
+    then the storyboard for framing/camera/duration/sound, then assets and reference images
+
+global_look:
+  era: "late-1980s realism"
+  palette: "cold grey-green, low saturation, slightly soft"
+  ratio: "16:9"
+  model: "<model>"
+  camera_style: "locked off unless stated"
+  light_rule: "one source per shot; no second source, no local highlight, no beam, no flare in the eyes"
+  audio_band: "no music, no score, no melody; no subtitles, no watermark, no logo"
+
+decisions:
+  - topic: "rain visibility"
+    ruling: "rain is suggested by sound and wet surfaces; no visible rain streaks in frame"
+    deviates_from_script: false
+
+scenes:
+  - id: sc1
+    name: "The flat"
+    time: "night"
+    place: "interior"
+    established_facts:
+      - "one sofa only; worn cover; coffee table; television on with sound down"
+      - "floorboards: dry at the start of the scene, wet from shot 4 onward"
+      - "window on the left of frame (from the sofa's side): rain on the glass"
+    must_not_drift: ["number of sofas", "the wet patch on the floorboards after shot 4"]
+    boundary: ""
+
+characters:
+  Father:
+    identity:
+      age: "52"
+      role: "haulage owner; the boy's biological father; eleven years absent"
+      body: "heavy, deliberate movements"
+      hair: "grey at the temples"
+      permanent_marks: []
+      likeness_assets: ["<father_portrait>"]
+      voice_assets: ["<father_voice>"]
+    variants:
+      V01_indoor:
+        wardrobe_paragraph: "a dark knitted cardigan over a pale shirt, trousers; indoor slippers"
+        body_state: "dry, warm, at home"
+        restraints: ""
+        props_held: []
+        attach_assets: ["<father_portrait>", "<flat_plate>"]
+        used_in: ["sc1"]
+    state_by_shot:
+      sc1-shot3: {variant: V01_indoor, position: "on the sofa, left of frame", facing: "toward the doorway", hands: "empty"}
+  Son:
+    identity:
+      age: "19"
+      role: "raised in a rented room by a man who was paid to keep him"
+      body: "thin; carries himself like someone ready to leave"
+      hair: "dark, wet"
+      permanent_marks: []
+      likeness_assets: ["<son_portrait>"]
+      voice_assets: ["<son_voice>"]
+    variants:
+      V01_dry:
+        wardrobe_paragraph: "a dark T-shirt and jeans; worn canvas shoes"
+        body_state: "dry"
+        used_in: []
+      V02_soaked:
+        wardrobe_paragraph: "a dark T-shirt and jeans, soaked through: the fabric clings, its colour darkened by water, hair wet, water running down from hair and clothes; a worn canvas bag on one shoulder"
+        body_state: "soaked; water drips from him onto the floor; no wounds, no blood"
+        restraints: ""
+        props_held: ["canvas bag (on the shoulder throughout)"]
+        attach_assets: ["<son_portrait>", "<canvas_bag_plate>"]
+        used_in: ["sc1"]
+    state_by_shot:
+      sc1-shot2: {variant: V02_soaked, position: "in the doorway, right of frame", facing: "into the room", hands: "empty; bag on shoulder"}
+      sc1-shot4: {variant: V02_soaked, position: "just inside the room, right of frame", facing: "toward the sofa", hands: "empty; bag on shoulder"}
+
+props:
+  - id: canvas bag
+    owner: Son
+    state: "worn, on one shoulder; wet"
+    rule: "stays on his shoulder in shots 2–6; does not slip off, does not change hands, does not disappear"
+  - id: towel
+    owner: Father
+    state: "introduced in shot 6, held out to the Son"
+    rule: "one towel only; the Son never dries his hair with it"
+  - id: floor wet patch
+    owner: —
+    state: "clear water only — transparent, floorboards darkened by water"
+    rule: "not blood, not rust-coloured; no pooling, no other spill anywhere in the room"
+
+events_done:
+  - "the Son arrives soaked and stands in the doorway, not coming in"
+  - "the Father tells him to sit; he steps in but stands"
+  - "the Father leaves frame to fetch a towel"
+
+not_revealed_to_audience: []
+
+content_policy:
+  file: content_policy.md
+  ruled_out: []

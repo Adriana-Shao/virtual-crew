@@ -1,0 +1,26 @@
+# Secrets and private project data never enter this repo.
+.env
+.env.*
+!.env.example
+
+# A private working area for real projects (state tables, prompts, footage)
+private/
+media_raw/
+shots_raw/
+pending/
+usable/
+rejected/
+
+# Generated media
+*.mp4
+*.mov
+*.m4v
+*.wav
+*.mp3
+
+# Scratch
+.DS_Store
+*.log
+tmp/
+__pycache__/
+*.pyc

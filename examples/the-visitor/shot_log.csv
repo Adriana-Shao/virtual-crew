@@ -1,0 +1,7 @@
+shot_id,take,date,duration_s,model,render_s,outcome,failure_types,attribution,notes
+sc1-shot1,1,2026-09-21,5,<model>,380,approved,,,"empty flat, rain on window, television on with sound down"
+sc1-shot2,1,2026-09-21,6,<model>,420,rejected,action_refusal;light_second_source,prompt defect,"he walked into the room; a second light appeared at the doorway"
+sc1-shot2,2,2026-09-21,6,<model>,410,rejected,light_second_source;action_refusal;prop_missing,prompt defect,"rim-light from the doorway; stepped inside; bag dropped on the floor"
+sc1-shot2,3,2026-09-21,6,<model>,405,approved,,,"refusal stated as balance; doorway darkness named; bag rule repeated in the action block"
+sc1-shot3,1,2026-09-21,4,<model>,300,approved,,,"the Father on the sofa, not looking up"
+sc1-shot4,1,2026-09-21,5,<model>,340,not_generated,,,prompt drafted; awaiting approval
