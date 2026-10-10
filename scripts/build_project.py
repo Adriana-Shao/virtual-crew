@@ -101,6 +101,12 @@ def parse_script(lines):
 
 # ────────────────────────── writers ──────────────────────────
 
+def _write(path, lines):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    open(path, "w", encoding="utf-8").write("\n".join(lines))
+    return path
+
+
 def write_shotlist(scenes, out_dir, project):
     L = [f"# {project} — shotlist", "",
          "> Built by virtual-crew/scripts/build_project.py from the storyboard.",
@@ -122,7 +128,7 @@ def write_shotlist(scenes, out_dir, project):
     L += ["## Totals", f"- scenes: {len(scenes)}", f"- shots: {total}",
           f"- duration: {secs} s ≈ {round(secs/60, 1)} min"]
     path = os.path.join(out_dir, "shotlist.md")
-    open(path, "w", encoding="utf-8").write("\n".join(L))
+    _write(path, L)
     return path, total, secs
 
 
@@ -169,7 +175,7 @@ def write_world_state(scenes, chars, out_dir, project):
           "  file: content_policy.md",
           "  ruled_out: []"]
     path = os.path.join(out_dir, "world_state.skeleton.yaml")
-    open(path, "w", encoding="utf-8").write("\n".join(L))
+    _write(path, L)
     return path
 
 
@@ -183,7 +189,7 @@ def write_assets_todo(scenes, chars, out_dir):
         L.append(f"- [ ] {sc['id']} {sc['name']}（{sc['time']}·{sc['place']}）")
     L += ["", "## Props", "", "- [ ] (list the props that must be generated as plates)"]
     path = os.path.join(out_dir, "assets_todo.md")
-    open(path, "w", encoding="utf-8").write("\n".join(L))
+    _write(path, L)
     return path
 
 
