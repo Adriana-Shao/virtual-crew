@@ -47,6 +47,9 @@ Then edit `project-profile.yaml` (paths, model, generation command) and start a 
 ## Repo layout
 
 ```
+make verify       # ad-hoc verification of scripts/ (exit 0 = pass) — see scripts/verify_scripts.py
+make lint         # syntax-check the scripts
+
 skills/           the five crew roles (SKILL.md + references/)
 templates/        prompt skeleton, QC checklist, watch-list, report templates, world-state template
 scripts/          build_project.py (parse script+storyboard → shotlist + world-state skeleton)
