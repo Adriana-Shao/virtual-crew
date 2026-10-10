@@ -38,11 +38,18 @@ never leaves the director's hands.
 
 ## Install
 
-```bash
+```
 git clone <this-repo> virtual-crew
 cp -r virtual-crew/skills/*  ~/.hermes/skills/         # or your agent's skill directory
 cp virtual-crew/project-profile.example.yaml  <your-project>/project-profile.yaml
 ```
+
+## Portfolio
+
+`docs/case-study.md` (and `docs/case-study.docx` for printing) — how this crew was used to make a
+~20-minute AI-generated short: division of labour, the two human gates, the rule system, the failure
+catalogue, asset governance, one boundary decision, and the cost table. Numbers marked `[TO FILL]`
+come from a real take log and are deliberately left empty here.
 
 Then edit `project-profile.yaml` (paths, model, generation command) and start a session:
 
