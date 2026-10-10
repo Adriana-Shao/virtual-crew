@@ -37,20 +37,21 @@ look:
   audio_band: "no music, no score, no melody; no subtitles, no watermark, no logo"
 
 generation:
-  # Leave empty to keep the crew at "prompt + reports" (recommended default).
-  command: ""                       # e.g. my-video-cli generate --image {assets} --prompt {prompt} --duration {seconds} --model seedance2.0_fast_vision
-  poll_command: ""                  # e.g. my-video-cli query-result --thread-id {thread} --run-id {run}
-  model: ""
+  # The director generates. The crew never calls a model.
+  driver: director                  # director | agent (agent only if you really want a render queue)
+  model: ""                         # for the record: which video model the director uses
   ratio: "16:9"
   resolution: "720p"
   duration_cap_seconds: 15
-  require_gate1: true               # never generate an unapproved prompt
+  naming: "sc{scene}_s{shot}_take{take}.mp4"   # what the director saves each take as
+  approved_naming: "sc{scene}-shot{shot}.mp4"  # the rename when the director calls it usable
 
 folders:
-  pending: 04_out/pending           # freshly generated, undecided
-  usable: 04_out/usable             # director-approved, named <scene>-shot<N>
-  rejected: 04_out/rejected         # director-rejected, take number kept
-  reports: 04_out/reports
+  # Optional conventions for the director's own media; the crew only writes prompts/, reports/, shot_log.csv
+  takes: 04_out/takes               # every take the director keeps
+  approved: 04_out/approved         # renamed <scene>-shot<N>
+  rejected: 04_out/rejected         # kept, takes preserved
+  reports: 04_out/reports           # comparison reports written by the crew
   deliverables: 05_final
 
 naming:

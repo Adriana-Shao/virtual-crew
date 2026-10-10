@@ -27,20 +27,19 @@ This skill is the dispatcher. It does not write anything itself: it runs the ord
 4. **Ethics gate** (`ethics-gate`): classify the shot against the content policy. Refuse → stop and offer non-depicting alternatives. Revise → apply the restraint clauses.
 5. **QC** (`qc-reviewer`): run the 12 checks; produce the risk list with rewritten lines.
 6. **Draft.** Assemble the prompt from `templates/prompt-skeleton.md`, sectioned plain text, actions per second, physics not adjectives, reverse locks present.
-7. **GATE 1 — director.** Present the prompt as one copyable block plus 3-4 confirmation points. Nothing is generated before the director says go. Write the approved version to `prompts/<shot id>.md` (version number incremented, old versions kept).
-8. **Generate.** Submit with the profile's command; poll; retry on timeout. Only if the profile has a command — otherwise stop here and hand the prompt over.
-9. **Download** into `pending/`, named `<scene>_s<shot>_take<n>.mp4`. Take numbers never reuse.
-10. **Watch-list.** Emit a risk-ranked, one-line-per-item watch list so the director knows what to look for without re-reading the prompt.
-11. **GATE 2 — director.** The director watches and reports problems in plain speech.
-12. **Comparison report** (`continuity-supervisor` + `qc-reviewer`): map the report onto recorded facts; expected → observed → severity → attribution → the exact block to paste back. Write `reports/<shot>_take<n>-qc.md`; log the take in `shot_log.csv`.
-13. **Rework or archive.** Director says usable → rename to `<scene>-shot<n>.mp4`, move to `usable/`, write the ending state back into the world-state. Otherwise → `rejected/`, keep the take number, prompt v(n+1), back to step 7.
-14. **Log.** Every take appended to `shot_log.csv` with outcome, failure types and attribution.
+7. **GATE 1 — director.** Present the prompt as one copyable block, plus 3-4 confirmation points, plus the plates to attach and the filename to save the clip under. Write the approved version to `prompts/<shot id>.md` (version incremented, old versions kept). The director generates — not the agent.
+8. **Watch-list.** Emit a risk-ranked, one-line-per-item list so the director knows what to look for in the render without re-reading the prompt.
+9. **GATE 2 — director.** The director generates the clip with their own tool, watches it, and reports problems in plain speech. "The door's white and double" is a complete report.
+10. **Comparison report** (`continuity-supervisor` + `qc-reviewer`): map that report onto recorded facts — expected → observed → severity → attribution → the exact block to paste back. Write `reports/<shot>_take<n>-qc.md`.
+11. **Next version.** Prompt v(n+1) with a short change list, back to step 7. Take numbers never reuse.
+12. **On approval.** Director says usable → write the shot's ending state back into the world-state, update the shotlist status.
+13. **Log.** Every take appended to `shot_log.csv`: outcome, failure types, attribution. On request, report rework rounds, failure-type ranking and the high-risk forecast for upcoming shots.
 
 ## Standing rules
 
 - The two gates are never skipped, not "just this once", not when the take looks good.
-- Nothing is generated from an unapproved prompt.
+- The crew never generates. It stops at prompt + report + number; the director runs the generator.
 - Never write "same as the previous shot" — re-describe in full.
 - The style block and the wardrobe paragraphs are pasted verbatim, never paraphrased.
-- A rejected take is data: log it, extract the failure type, and add a catalogue entry if the cause is a prompt defect.
-- One take at a time in `pending/` per shot; keep `pending/` short (≤5 files).
+- A rejected take is data: log it, name the failure type, and add a catalogue entry when the cause is a prompt defect.
+- Keep the director's round-trip short: one prompt, one short change list, one number.

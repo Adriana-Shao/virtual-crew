@@ -4,7 +4,7 @@ One per take. This is the document that turns "it looks wrong" into a decision.
 
 ```
 COMPARISON REPORT — <shot id> take<N>
-file: pending/<name>.mp4
+file: <the take the director saved>
 against: prompts/<shot id>.md (v<N>) + world_state.yaml
 director's verdict: usable | not usable
 date: 
@@ -34,9 +34,10 @@ type of change: added reverse lock / reframed / split the action / replaced a pl
 - light and time:
 - events now true:
 
-6. ARCHIVING
-- pending → usable | rejected; final filename:
-- shot_log.csv appended: takes, failure types, render time
+6. REWORK ACCOUNTING
+- take number, outcome, failure types, attribution → shot_log.csv
+- rounds this shot has cost so far:
+- if the same failure type recurs, the next fix must be a different approach (split / reframe / new plate), not the same words again
 ```
 
 ## Severity

@@ -12,7 +12,7 @@ script.md                      short script: two characters, one scene
 shotlist.md                    the shot index (shot / framing / duration / content / variant / status)
 world_state.yaml               identity + variants + one scene + props + events
 prompts/sc1-shot2.md           a finished shot prompt, in the house format
-reports/sc1_s2_take1-qc.md     a comparison report: what the take did wrong, and the fix
+reports/sc1_s2_take2-qc.md     a comparison report: what the take did wrong, and the fix
 shot_log.csv                   take log, with one rejected take and one approved
 ```
 
@@ -29,6 +29,6 @@ prompt drafts, watch-lists, comparison reports, archiving — comes from the cre
 
 ## What to look at first
 
-`reports/sc1_s2_take1-qc.md`. It is the artefact that shows what this workflow is actually for:
+`reports/sc1_s2_take2-qc.md`. It is the artefact that shows what this workflow is actually for:
 a take that looked plausible, a specific recorded fact it violated, the severity, and the exact
 prompt block that fixes it.

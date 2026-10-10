@@ -4,7 +4,7 @@ Generated automatically after each take, from the shot's constraints. Risk-ranke
 
 ```
 WATCH-LIST — <shot id> take<N>
-file: <pending path>
+file: <the file the director saved, e.g. takes/sc1_s11_take1.mp4>
 against: prompts/<shot id>.md (v<N>) + world_state.yaml
 report to: reports/<shot id>_take<N>-qc.md
 

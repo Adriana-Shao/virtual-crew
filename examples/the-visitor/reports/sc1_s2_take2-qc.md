@@ -2,7 +2,7 @@
 
 ```
 COMPARISON REPORT — sc1-shot2 take2
-file: pending/sc1_s2_take2.mp4
+file: takes/sc1_s2_take2.mp4
 against: prompts/sc1-shot2.md (v2) + world_state.yaml (Son = V02_soaked)
 director's verdict: not usable
 date: 2026-09-21
@@ -36,8 +36,8 @@ date: 2026-09-21
 5. STATE WRITE-BACK
 - not written: take rejected, the world does not advance
 
-6. ARCHIVING
-- pending → rejected (take kept as sc1_s2_take2.mp4)
+6. REWORK ACCOUNTING
+- kept as takes/sc1_s2_take2.mp4 (rejected; the take number is preserved, take 3 follows)
 - shot_log.csv appended: take 2, failure_types "light_second_source;action_refusal;prop_missing",
   attribution "prompt defect"
 ```

@@ -19,7 +19,7 @@ sc14-shot9,2,2026-09-21,15,<model>,880,approved,,,"whole-body sinking clause + d
 | `shot_id` | `sc<scene>-shot<n>` |
 | `take` | increments per generation; never reused |
 | `duration_s` | requested duration |
-| `render_s` | wall-clock time for the take (0 if not generated) |
+| `render_s` | optional — the director's own timing note; `0` if not recorded |
 | `outcome` | `not_generated` · `rejected` · `approved` |
 | `failure_types` | `;`-separated slugs: `prop_orientation`, `prop_missing`, `set_drift`, `framing`, `lip_sync`, `pacing`, `sinking_posture`, `ambience_level`, `extra_limbs`, `style_drift`, `anachronism`, `gore_restraint`, `dialogue_missing` |
 | `attribution` | `prompt defect` · `model limitation` · `asset problem` (empty for approved) |

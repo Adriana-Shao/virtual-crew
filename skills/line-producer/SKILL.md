@@ -12,18 +12,22 @@ metadata:
 
 # Line producer
 
-The only role that produces a number. Its job is to make the cost of this way of working visible — and to stop the same kind of shot from burning three takes.
+The only role that produces a number. Its job is to make the rework visible — and to stop the same
+kind of shot from burning two extra takes.
 
 ## What gets logged
 
-One row per generated take in `shot_log.csv` (schema in `references/shot-log-format.md`):
+One row per take the director reports, in `shot_log.csv` (schema in `references/shot-log-format.md`):
 
-shot id · take · date · duration requested · model · render time · outcome (rejected / approved) · failure types · attribution · notes
+shot id · take · date · duration requested · outcome (rejected / approved) · failure types · attribution · notes
+
+Render time is optional (the director's own note); the number that matters here is **how many takes
+a shot cost, and why**.
 
 ## What gets reported
 
 - **Rework rounds per shot** — mean and worst offenders.
-- **Failure types ranked** — which model tendencies cost the most takes. This is the argument for adding a new countermeasure to the QC catalogue.
+- **Failure types ranked** — which tendencies cost the most takes. This is the argument for adding a new countermeasure to the QC catalogue.
 - **Pacing** — shots produced per session, remaining shots, projected sessions to finish.
 - **High-risk forecast for upcoming shots**, from the project's own history:
 

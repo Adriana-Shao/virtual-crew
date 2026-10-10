@@ -17,20 +17,23 @@ Most AI-film workflows demo a model. This one documents the **method**: how a sh
 
 ## The loop
 
+The crew writes and checks prompts; the director generates and judges. Generation is deliberately
+**not** automated: driving a render queue from an agent only puts latency between the director's
+eyes and the next prompt.
+
 ```
 shot id ──▶ look up (shotlist + world-state)
-        ──▶ draft prompt (continuity + art + QC checks)
-        ──▶ GATE 1: director approves or edits          ◀── human
-        ──▶ submit generation ──▶ auto-download to pending/
-        ──▶ generate a watch-list (risk-ranked, one line each)
-        ──▶ GATE 2: director watches, reports problems  ◀── human
-        ──▶ structured comparison report ──▶ prompt v2 ──▶ regenerate
-        ──▶ director says "usable" ──▶ rename (scene+shot) into usable/
-                                     else ──▶ rejected/
-        ──▶ update world-state + shot log
+        ──▶ draft prompt (continuity + art + ethics + QC checks)
+        ──▶ GATE 1: director approves or edits             ◀── human
+        ──▶ director generates the clip (their tool, their quota)
+        ──▶ GATE 2: director reports, in plain speech, what is wrong  ◀── human
+        ──▶ structured comparison report ──▶ prompt v(n+1) ──▶ back to GATE 1
+        ──▶ director says usable ──▶ ending state written back to the world-state
+        ──▶ every take logged: rework rounds, failure types, attribution
 ```
 
-Two gates are deliberately human: **approve the prompt** and **judge usability**. Everything else — lookup, drafting, downloading, report structuring, naming, archiving, logging — is automated.
+Per shot the crew delivers **a prompt, a comparison report, and a number**. The generation itself
+never leaves the director's hands.
 
 ## Install
 
@@ -64,7 +67,9 @@ project-profile.example.yaml
 - The **method and tooling** are project-agnostic; the **project layer** (script, storyboard, world-state, assets, style DNA) is data you re-supply per film.
 - The failure catalogue is model-specific. Entries here were collected against one text-to-video model; the structure transfers, the entries must be re-earned when you change models.
 - No model is called for QC in this repo: the director watches and reports, the agent structures the report. An optional vision-model mode is deliberately out of scope so that no frame of an unreleased film leaves the machine.
-- Generation is out of scope by default: the crew stops at "prompt + reports". A generation command can be wired in per project (`project-profile.yaml`), still behind GATE 1.
+- Generation is out of scope, by design. The director runs the generator; the crew stops at the
+  prompt, the reports and the numbers. No API keys in this repo, no frame of an unfinished film
+  leaving the machine, no render queue for an agent to babysit.
 
 ## License
 
