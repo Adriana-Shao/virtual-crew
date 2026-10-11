@@ -57,14 +57,22 @@ def esc(t):
     return html.escape(t, quote=False)
 
 
+INLINE = re.compile(r"\*\*(.+?)\*\*|\*([^*\n]+?)\*")
+
+
 def runs(text):
-    """**bold** → runs; plain text otherwise."""
-    out = []
-    for i, part in enumerate(re.split(r"\*\*(.+?)\*\*", text)):
-        if not part:
-            continue
-        props = '<w:rPr><w:b/></w:rPr>' if i % 2 else ""
-        out.append(f'<w:r>{props}<w:t xml:space="preserve">{esc(part)}</w:t></w:r>')
+    """**bold** → bold runs; *italic* → italic runs; everything else plain."""
+    out, pos = [], 0
+    for m in INLINE.finditer(text):
+        if m.start() > pos:
+            out.append(f'<w:r><w:t xml:space="preserve">{esc(text[pos:m.start()])}</w:t></w:r>')
+        if m.group(1) is not None:
+            out.append(f'<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">{esc(m.group(1))}</w:t></w:r>')
+        else:
+            out.append(f'<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">{esc(m.group(2))}</w:t></w:r>')
+        pos = m.end()
+    if pos < len(text):
+        out.append(f'<w:r><w:t xml:space="preserve">{esc(text[pos:])}</w:t></w:r>')
     return "".join(out) or '<w:r><w:t xml:space="preserve"></w:t></w:r>'
 
 

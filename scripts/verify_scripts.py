@@ -126,17 +126,19 @@ try:
     # ── md_to_docx ───────────────────────────────────────────────────────────
     md = os.path.join(tmp, "doc.md")
     open(md, "w", encoding="utf-8").write(
-        "# T\n\n## H\n\n### P\n\n- item **bold**\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n> quote\n")
+        "# T\n\n## H\n\n### P\n\n- item **bold** and *italic*\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n> quote\n")
     dx = MD.convert(md, os.path.join(tmp, "doc.docx"))
     with zipfile.ZipFile(dx) as z:
         names = set(z.namelist())
         xml = z.read("word/document.xml").decode("utf-8")
     check("docx: valid package parts",
           {"[Content_Types].xml", "word/document.xml", "word/styles.xml"} <= names, str(sorted(names)))
-    check("docx: headings, table, bold, quote rendered",
-          "Heading1" in xml and "Heading3" in xml and "<w:tbl>" in xml and "<w:b/>" in xml, xml[:200])
+    check("docx: headings, table, bold, italic, quote rendered",
+          "Heading1" in xml and "Heading3" in xml and "<w:tbl>" in xml and "<w:b/>" in xml and "<w:i/>" in xml,
+          xml[:200])
     plain = re.sub(r"<[^>]+>", "", xml)
     check("docx: text round-trips", "T" in plain and "bold" in plain and "quote" in plain, plain[:120])
+    check("docx: no markdown asterisks left", "*" not in plain, plain[:160])
     check("docx: CJK-safe fonts in styles", "SimSun" in zipfile.ZipFile(dx).read("word/styles.xml").decode())
 
     # ── shot_log ─────────────────────────────────────────────────────────────
