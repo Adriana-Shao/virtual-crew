@@ -79,6 +79,10 @@ The full document (identities written out to the face, variants carrying only th
 directional views per location, props with standing rules) is at
 `examples/the-visitor/assets_prompts.md` — and it is the same format used in production.
 
+![the asset document the crew produces before any shot is written: identities written out to the
+face, variants carrying only the change, four directional views per location, props with standing
+rules](docs/figures/fig4-asset-document.png)
+
 ## The loop
 
 The crew writes and checks prompts; the director generates and judges. Generation is deliberately
