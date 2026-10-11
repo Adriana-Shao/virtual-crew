@@ -3,6 +3,12 @@
 
 *Draft v1 — numbers marked `[TO FILL]` come from a real take log and must not be invented.*
 
+Tailored versions of this case study: `case-study-hku.md` (MA — creative emphasis: authorship split
+with the model, reverse locks as aesthetic discipline, one boundary decision) and
+`case-study-hkbu.md` (MSc — technical emphasis: problem framing, data layer, implementation,
+measurement, threats to validity). This file is the neutral master; the two derived versions restructure
+the same facts around different arguments.
+
 ---
 
 ## 1. Context
