@@ -154,6 +154,25 @@ try:
     check("docx: no markdown asterisks left", "*" not in plain, plain[:160])
     check("docx: CJK-safe fonts in styles", "SimSun" in zipfile.ZipFile(dx).read("word/styles.xml").decode())
 
+    # images: ![caption](png) must be embedded, not dropped
+    import base64
+    img = os.path.join(tmp, "img.png")
+    open(img, "wb").write(base64.b64decode(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=="))
+    md2 = os.path.join(tmp, "img.md")
+    open(md2, "w", encoding="utf-8").write("before\n\n![Figure 1 — a caption](img.png)\n\nafter\n")
+    dx2 = MD.convert(md2, os.path.join(tmp, "img.docx"))
+    with zipfile.ZipFile(dx2) as z:
+        names2 = set(z.namelist())
+        rels = z.read("word/_rels/document.xml.rels").decode("utf-8")
+        xml2 = z.read("word/document.xml").decode("utf-8")
+    check("docx: image embedded as media part", "word/media/image1.png" in names2, str(sorted(names2)))
+    check("docx: image relationship declared", "relationships/image" in rels and "media/image1.png" in rels)
+    check("docx: drawing element + caption present",
+          "<w:drawing>" in xml2 and "Figure 1 — a caption" in xml2, xml2[:160])
+    check("docx: png content type declared",
+          "image/png" in zipfile.ZipFile(dx2).read("[Content_Types].xml").decode())
+
     # ── shot_log ─────────────────────────────────────────────────────────────
     log = os.path.join(tmp, "shot_log.csv")
     for take, outcome in ((1, "rejected"), (2, "rejected"), (3, "approved")):

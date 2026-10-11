@@ -4,8 +4,10 @@ md_to_docx.py — turn a markdown document into a Word .docx the director can co
 
     md_to_docx.py IN.md [OUT.docx]
 
-Stdlib only (no python-docx): a .docx is a zip of XML parts, and this writes the four that matter.
-Handles: # / ## / ### headings, paragraphs, - list items, > quotes, **bold**, and simple pipe tables.
+Stdlib only (no python-docx): a .docx is a zip of XML parts, and this writes the ones that matter.
+Handles: # / ## / ### headings, paragraphs, - list items, > quotes, **bold**, *italic*,
+pipe tables, and images — `![caption](path.png)` embeds the PNG scaled to the page width
+with the caption underneath. Relative image paths resolve against the markdown file.
 """
 
 import html
@@ -18,6 +20,7 @@ CONTENT_TYPES = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
 <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
 <Default Extension="xml" ContentType="application/xml"/>
+<Default Extension="png" ContentType="image/png"/>
 <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
 <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
 </Types>"""
@@ -25,11 +28,6 @@ CONTENT_TYPES = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 RELS = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
 <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
-</Relationships>"""
-
-DOC_RELS = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
 </Relationships>"""
 
 STYLES = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -52,12 +50,31 @@ STYLES = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:pPr><w:ind w:left="360"/></w:pPr><w:rPr><w:i/><w:color w:val="444444"/></w:rPr></w:style>
 </w:styles>"""
 
+DOC_OPEN = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+            '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
+            ' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
+            ' xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"'
+            ' xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"'
+            ' xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>')
+
+PNG_RE = re.compile(r"!\[(.*?)\]\((.+?)\)")
+INLINE = re.compile(r"\*\*(.+?)\*\*|\*([^*\n]+?)\*")
+MAX_EMU = 5_700_000          # ~6.2 in of usable width
+PX_EMU = 9525                # 1 px at 96 dpi
+
 
 def esc(t):
     return html.escape(t, quote=False)
 
 
-INLINE = re.compile(r"\*\*(.+?)\*\*|\*([^*\n]+?)\*")
+def png_size(path):
+    with open(path, "rb") as f:
+        head = f.read(33)
+    if head[:8] != b"\x89PNG\r\n\x1a\n":
+        return None
+    w = int.from_bytes(head[16:20], "big")
+    h = int.from_bytes(head[20:24], "big")
+    return w, h
 
 
 def runs(text):
@@ -79,6 +96,20 @@ def runs(text):
 def para(text, style=None):
     ppr = f'<w:pPr><w:pStyle w:val="{style}"/></w:pPr>' if style else ""
     return f"<w:p>{ppr}{runs(text)}</w:p>"
+
+
+def drawing(rid, cx, cy, idx):
+    return (
+        "<w:p><w:r><w:drawing>"
+        f'<wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="{cx}" cy="{cy}"/>'
+        f'<wp:docPr id="{idx}" name="Figure{idx}"/><wp:cNvGraphicFramePr/>'
+        '<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">'
+        "<pic:pic><pic:nvPicPr>"
+        f'<pic:cNvPr id="{idx}" name="Figure{idx}"/><pic:cNvPicPr/></pic:nvPicPr>'
+        f'<pic:blipFill><a:blip r:embed="{rid}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>'
+        f'<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="{cx}" cy="{cy}"/></a:xfrm>'
+        '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic>'
+        "</a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>")
 
 
 def table(rows):
@@ -108,7 +139,7 @@ def join_wrapped(lines):
         ln = lines[i]
         guard = 0
         while ln.strip() and _unbalanced(ln) and i + 1 < len(lines) and lines[i + 1].strip() \
-                and not lines[i + 1].lstrip().startswith(("#", "|", ">")) and guard < 6:
+                and not lines[i + 1].lstrip().startswith(("#", "|", ">", "!")) and guard < 6:
             i += 1
             guard += 1
             ln = ln.rstrip() + " " + lines[i].strip()
@@ -119,9 +150,33 @@ def join_wrapped(lines):
 
 def convert(md_path, docx_path):
     lines = join_wrapped(open(md_path, encoding="utf-8").read().split("\n"))
-    body, i = [], 0
+    base = os.path.dirname(os.path.abspath(md_path))
+    body, media, rels, i = [], [], [], 0
     while i < len(lines):
         ln = lines[i].rstrip()
+
+        img = PNG_RE.search(ln)
+        if img and ln.strip().startswith("!["):
+            caption, src = img.group(1), img.group(2)
+            path = src if os.path.isabs(src) else os.path.join(base, src)
+            size = png_size(path) if os.path.exists(path) else None
+            if size:
+                w, h = size
+                cx = min(MAX_EMU, w * PX_EMU)
+                cy = int(cx * h / w)
+                fname = f"image{len(media) + 1}.png"
+                rid = f"rIdImg{len(media) + 1}"
+                media.append((fname, open(path, "rb").read()))
+                rels.append(f'<Relationship Id="{rid}" Type="http://schemas.openxmlformats.org/'
+                            f'officeDocument/2006/relationships/image" Target="media/{fname}"/>')
+                body.append(drawing(rid, cx, cy, len(media)))
+                if caption:
+                    body.append(para(caption, "Quote"))
+            else:
+                body.append(para(f"[image not found: {src}]", "Quote"))
+            i += 1
+            continue
+
         if ln.startswith("|") and i + 1 < len(lines) and set(lines[i + 1].replace("|", "").strip()) <= set("-: "):
             rows = []
             while i < len(lines) and lines[i].startswith("|"):
@@ -146,19 +201,23 @@ def convert(md_path, docx_path):
             body.append(para(ln))
         i += 1
 
-    doc = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-           '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
-           "<w:body>" + "".join(body) +
+    doc = (DOC_OPEN + "".join(body) +
            '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/>'
            '<w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134"/></w:sectPr>'
            "</w:body></w:document>")
+    doc_rels = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+                '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+                '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/'
+                '2006/relationships/styles" Target="styles.xml"/>' + "".join(rels) + "</Relationships>")
 
     with zipfile.ZipFile(docx_path, "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr("[Content_Types].xml", CONTENT_TYPES)
         z.writestr("_rels/.rels", RELS)
-        z.writestr("word/_rels/document.xml.rels", DOC_RELS)
+        z.writestr("word/_rels/document.xml.rels", doc_rels)
         z.writestr("word/styles.xml", STYLES)
         z.writestr("word/document.xml", doc)
+        for fname, data in media:
+            z.writestr(f"word/media/{fname}", data)
     return docx_path
 
 

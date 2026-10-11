@@ -12,9 +12,10 @@ decision points named explicitly.
 
 ## Quick start
 
-After installing (below), you talk to the crew the way you would to a person:
+After installing (below), you talk to the crew the way you would to a person. The examples below use
+the fictional project in `examples/the-visitor/` — the repository never ships a real production:
 
-> **shot sc1-shot8 — write the prompt**
+> **shot sc1-shot2 — write the prompt**
 
 and you get back four things: the continuity list for that shot (every fact that must be re-described
 in full, because the generator has no memory), the reference plates to attach, a copyable prompt with
@@ -25,6 +26,19 @@ in your own tool. Then you report what is wrong in plain speech:
 
 and the crew returns a comparison report (expected / observed / severity / attribution), prompt v2
 with the change list, and one row in the take log.
+
+## Demo
+
+Same two commands the crew runs on every shot — a prompt as first written, the same prompt after the
+fix, the rework accounting, and the verification harness:
+
+![the prompt linter on a shot as first written: 11 defects, each with the rewrite, then the same shot
+clean](docs/figures/fig1-prompt-lint-before-after.png)
+
+![the take log after four takes: rework rounds, failure types and
+attribution](docs/figures/fig2-rework-accounting.png)
+
+![make verify: 27 checks, exit 0](docs/figures/fig3-verification.png)
 
 ## The crew — seven skills
 
@@ -37,6 +51,33 @@ with the change list, and one row in the take log.
 | `qc-reviewer` | 审片 | Pre-flight check of a prompt against a catalogue of observed model failure modes, with rewritten lines. |
 | `line-producer` | 制片 | Rework rounds per shot, failure-type ranking, high-risk forecast for upcoming shots. |
 | `ethics-gate` | 伦理闸门 | Content-boundary check before generation: pass / revise / refuse, plus non-depicting alternatives. |
+
+## The example project (what the data layer looks like)
+
+`examples/the-visitor/` is a complete, fictional, sanitised run of the pipeline — two characters, one
+location, six shots. It is the file set the crew produces, so you can see the shape of the work without
+reading anybody's real film. From `examples/the-visitor/assets_prompts.md`:
+
+```
+### A3 The Son · soaked (V01)
+【不变的部分】face, bone structure, hair and build strictly copy the uploaded identity plate —
+the same person, unchanged.
+【变化的部分】a dark T-shirt and dark trousers, soaked through: the fabric clings, its colour
+darkened by water; hair wet and dripping onto his face; a worn canvas bag on one shoulder.
+【禁止出现】the water must be clear — not blood, not red; no wounds; don't change the face.
+```
+
+```
+### B3 The flat · south view (camera at the kitchen passage, looking north)
+【画面范围】square on the north wall: the entry door inside, its handle on the right, the mat on
+the floor, the water trail leading in from the threshold.
+【固定事实】the door is single-panelled, dark wood, and closed; the mat sits inside it.
+【禁止出现】the door must not be a double door, must not be white, nothing visible outside it.
+```
+
+The full document (identities written out to the face, variants carrying only the change, four
+directional views per location, props with standing rules) is at
+`examples/the-visitor/assets_prompts.md` — and it is the same format used in production.
 
 ## The loop
 
@@ -81,8 +122,10 @@ scripts/          build_project.py    parse script + storyboard → shotlist + w
                   prompt_lint.py      static pre-flight check of a prompt
                   shot_log.py         take log + rework / failure-type statistics
                   verify_scripts.py   the checks behind `make verify`
-examples/         the-visitor/ — a small fictional project showing the data layer end to end
-docs/             case-study.md (portfolio) · github-metadata.md (About text and topics)
+examples/         the-visitor/ — a small fictional project showing the data layer end to end:
+                  script → shotlist → world_state → assets_prompts (11 prompts: identities, variants,
+                  four location views, props) → a shot prompt → a comparison report → the take log
+docs/             case-study.md (portfolio) · one-pager.md · demo-script.md · figures/ · github-metadata.md
 assets/           demo/ (screen recording — pending) · before-after/ (frame evidence — pending)
 Makefile          make verify · make lint
 ```

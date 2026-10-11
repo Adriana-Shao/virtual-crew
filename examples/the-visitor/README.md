@@ -11,7 +11,10 @@ third-party material. The project is deliberately small — one scene, six shots
 script.md                      short script: two characters, one scene
 shotlist.md                    the shot index (shot / framing / duration / content / variant / status)
 world_state.yaml               identity + variants + one scene + props + events
+assets_prompts.md              the asset document: 11 prompts (2 identities, 3 variants,
+                               4 directional location views, 3 props) — with a generation order
 prompts/sc1-shot2.md           a finished shot prompt, in the house format
+prompts/sc1-shot2-v1-defective.md   the same shot as first written — what the linter catches
 reports/sc1_s2_take2-qc.md     a comparison report: what the take did wrong, and the fix
 shot_log.csv                   take log, with one rejected take and one approved
 ```

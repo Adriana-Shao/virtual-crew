@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+ html{background:#12151a}body{margin:0;min-height:100vh;background:#12151a;color:#d7dae0;font:15px/1.55 "SF Mono",Menlo,Consolas,monospace;
+      width:1200px;padding:24px 28px;box-sizing:border-box;overflow:hidden}
+ .bar{color:#6f7783;font-size:12px;letter-spacing:.04em;margin:0 0 14px}
+ .cmd{color:#8fd694}
+ .ok{color:#6fd08c;font-weight:600}
+ .dim{color:#8b93a0}
+</style></head><body>
+<div class="bar">virtual-crew · make verify · ad-hoc verification of scripts/</div>
+<div class="cmd">$ make lint &amp;&amp; make verify</div>
+<div class="dim">python3 -m py_compile scripts/build_project.py scripts/extract_assets.py scripts/prompt_lint.py \</div>
+<div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;scripts/shot_log.py scripts/md_to_docx.py scripts/verify_scripts.py</div>
+<div>py_compile ok</div>
+<div class="dim">PASS &nbsp;storyboard: scenes parsed</div>
+<div class="dim">PASS &nbsp;script: bios behind &lt;w:br/&gt; extracted</div>
+<div class="dim">PASS &nbsp;lint: real cross-shot reference still flagged</div>
+<div class="dim">PASS &nbsp;lint: LOW-only prompt reports RISK: LOW</div>
+<div class="dim">PASS &nbsp;assets: clue credited to the nearest name</div>
+<div class="dim">PASS &nbsp;docx: no markdown asterisks left</div>
+<div class="dim">PASS &nbsp;log: append-only round trip, header written once</div>
+<div class="dim">&nbsp;… (27 checks in total)</div>
+<div>&nbsp;</div>
+<div class="ok">ALL PASS</div>
+<div class="dim">(ad-hoc verification of scripts/*.py — not a test suite)</div>
+<div class="dim">exit 0</div>
+</body></html>

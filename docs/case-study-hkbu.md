@@ -75,6 +75,12 @@ soft breaks, writer outputs, linter severity and case handling, the document pac
 font configuration, and an append-only take-log round trip. It is labelled ad-hoc verification, not a
 test suite — it exercises the changed behaviour, not the space of inputs.
 
+![Figure 1 — the prompt linter on a shot as first written: 11 defects, each with the rewritten line,
+then the same shot clean.](figures/fig1-prompt-lint-before-after.png)
+
+![Figure 2 — `make verify`: 27 checks over the parsers, the linter, the document writer and the take
+log; exit 0.](figures/fig3-verification.png)
+
 ## 5. Results and measurement
 
 | Measure | Value |
@@ -91,6 +97,9 @@ test suite — it exercises the changed behaviour, not the space of inputs.
 The fields marked `[TO FILL]` are left empty on purpose: they come from the take log and are not
 invented. The measurement matters for the same reason attribution does — it is what tells you whether
 the next improvement should be a rewritten clause, a different shot design, or a new plate.
+
+![Figure 3 — the take log after four takes: rework rounds, the failure types that cost them, and the
+attribution that decides the fix.](figures/fig2-rework-accounting.png)
 
 ## 6. Limitations and threats to validity
 

@@ -96,6 +96,8 @@ limitation**, the shot is redesigned (split, reframe, new plate); if it is an **
 plate is regenerated. Only the first kind is a lesson. Attributing the other two to "bad prompting"
 would have wasted days.
 
+![Figure 1 — a prompt as first written, and after the fix.](figures/fig1-prompt-lint-before-after.png)
+
 ## 6. Boundaries, decided once
 
 One scene in the script would have required depicting the sexual abuse of a 12-year-old. I ruled it
@@ -135,6 +137,10 @@ production". The log is append-only, rejected takes included.
   more.
 
 ## Appendix — the artefacts
+
+![Figure 2 — the take log: rework rounds, failure types, attribution.](figures/fig2-rework-accounting.png)
+
+![Figure 3 — `make verify`: 27 checks, exit 0.](figures/fig3-verification.png)
 
 - The crew: `virtual-crew` — five role skills, four templates, five scripts, and a fictional example
   project with a worked comparison report.

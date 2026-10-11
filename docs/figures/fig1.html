@@ -1,0 +1,34 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+ html{background:#12151a}body{margin:0;min-height:100vh;background:#12151a;color:#d7dae0;font:15px/1.45 "SF Mono",Menlo,Consolas,monospace;
+      width:1200px;padding:22px 26px;box-sizing:border-box;overflow:hidden}
+ .bar{color:#6f7783;font-size:12px;letter-spacing:.04em;margin:0 0 12px}
+ .cmd{color:#8fd694}
+ .hi{color:#ff6b6b;font-weight:600}
+ .md{color:#e8c07d}
+ .ok{color:#6fd08c;font-weight:600}
+ .dim{color:#8b93a0}
+ .rule{color:#39404b;margin:14px 0 10px}
+</style></head><body>
+<div class="bar">virtual-crew · prompt_lint.py · the-visitor (fictional example project)</div>
+<div class="cmd">$ python3 scripts/prompt_lint.py examples/the-visitor/prompts/sc1-shot2-v1-defective.md --lang en</div>
+<div>PROMPT LINT — sc1-shot2-v1-defective.md &nbsp; <span class="hi">RISK: HIGH</span> &nbsp;(11 items)</div>
+<div class="hi">[HIGH] light: no single-source statement</div>
+<div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix: add: "one light source only, even and uniform across the frame"</div>
+<div class="hi">[HIGH] light: no ban on a second light source</div>
+<div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix: add: "no second source, no beam, no spot"</div>
+<div class="hi">[HIGH] reverse locks: no named forbiddens</div>
+<div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix: add a [REVERSE LOCKS] list: "no second prop, no auto push-in, no cut, …"</div>
+<div class="hi">[HIGH] cross-shot reference: refers to a previous shot</div>
+<div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix: expand the fact in full instead</div>
+<div class="hi">[HIGH] sound band: no sound band</div>
+<div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix: add: "no music, no score, no melody; no subtitles, no logo"</div>
+<div class="md">[MEDIUM] framing: framing given only as a label</div>
+<div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix: rewrite as visible content: "head to knees in frame"</div>
+<div class="md">[MEDIUM] abstract emotion: found "devastated"</div>
+<div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix: convert to physics: mouth corners, gaze, shoulders, breath</div>
+<div class="rule">────────────────────────────────────────────────────────────────────────────</div>
+<div class="cmd">$ python3 scripts/prompt_lint.py examples/the-visitor/prompts/sc1-shot2.md --lang en</div>
+<div>PROMPT LINT — sc1-shot2.md &nbsp; <span class="ok">RISK: LOW</span> &nbsp;(1 item)</div>
+<div class="dim">[LOW] hands: hand assignment not stated (fine if the hands do no work)</div>
+</body></html>
