@@ -126,7 +126,7 @@ try:
     # ── md_to_docx ───────────────────────────────────────────────────────────
     md = os.path.join(tmp, "doc.md")
     open(md, "w", encoding="utf-8").write(
-        "# T\n\n## H\n\n### P\n\n- item **bold** and *italic*\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n> quote\n")
+        "# T\n\n## H\n\n### P\n\n- item **bold** and *italic*\n- wrapped **bold\n  across lines**\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n> quote\n")
     dx = MD.convert(md, os.path.join(tmp, "doc.docx"))
     with zipfile.ZipFile(dx) as z:
         names = set(z.namelist())

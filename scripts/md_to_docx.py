@@ -95,8 +95,30 @@ def table(rows):
     return f"<w:tbl><w:tblPr>{borders}</w:tblPr>{''.join(body)}</w:tbl>"
 
 
+def _unbalanced(text):
+    """True when emphasis markers are not closed on this line (markdown soft wrap)."""
+    return "*" in INLINE.sub("", text)
+
+
+def join_wrapped(lines):
+    """Merge a soft-wrapped emphasis span with the following line(s) — markdown allows
+    **bold** and *italic* to span a line break, and a per-line renderer would leak asterisks."""
+    out, i = [], 0
+    while i < len(lines):
+        ln = lines[i]
+        guard = 0
+        while ln.strip() and _unbalanced(ln) and i + 1 < len(lines) and lines[i + 1].strip() \
+                and not lines[i + 1].lstrip().startswith(("#", "|", ">")) and guard < 6:
+            i += 1
+            guard += 1
+            ln = ln.rstrip() + " " + lines[i].strip()
+        out.append(ln)
+        i += 1
+    return out
+
+
 def convert(md_path, docx_path):
-    lines = open(md_path, encoding="utf-8").read().split("\n")
+    lines = join_wrapped(open(md_path, encoding="utf-8").read().split("\n"))
     body, i = [], 0
     while i < len(lines):
         ln = lines[i].rstrip()
