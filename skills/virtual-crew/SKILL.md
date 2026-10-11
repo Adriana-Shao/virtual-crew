@@ -16,12 +16,12 @@ This skill is the dispatcher. It does not write anything itself: it runs the ord
 
 ## Preconditions
 
-1. `project-profile.yaml` exists in the project root and lists: sources, shotlist, world-state, assets, look, generation driver, folders, naming, content policy.
-2. `shotlist.md` and `world_state.yaml` exist (build them with `scripts/build_project.py` if they do not).
+1. `project-profile.yaml` exists in the project root and lists: sources, shotlist, world-state, assets, look, generation driver, folders, naming, content policy, and `crew.repo` — the absolute path of this crew's repository (where `scripts/` lives). Skills are usually installed elsewhere (e.g. `~/.hermes/skills/`), so **resolve every script path against `crew.repo`, not against the current directory**.
+2. `shotlist.md` and `world_state.yaml` exist (build them with `"$CREW"/scripts/build_project.py` if they do not, where `CREW=$(project-profile crew.repo)`).
 
 ## Stage A — assets first (once per film, before any shot prompt)
 
-1. Run `scripts/extract_assets.py` on the script + storyboard → `assets_inventory.md` (characters with variant clues, the scene list, props ranked by frequency).
+1. Run `"$CREW"/scripts/extract_assets.py` on the script + storyboard → `assets_inventory.md` (characters with variant clues, the scene list, props ranked), where `CREW` is `crew.repo` from the project profile.
 2. Load `asset-forge`: write the asset document into the project folder, using `templates/asset-prompt-document.md` — character identities, **one prompt per variant** (every wardrobe or face change gets its own), **four directional prompts per location** (N/E/S/W, with a layout note so the four views cannot contradict each other), and prop prompts.
 3. Hand it over and stop. Deliver as **markdown + Word** (`scripts/md_to_docx.py`) into the project's asset folder, so the director can copy prompts straight out of Word. The director generates the plates one at a time. Shot work does not begin until the plates a shot needs exist.
 

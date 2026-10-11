@@ -6,6 +6,11 @@ project:
   dir: /abs/path/to/project         # project root
   language: en                      # zh | en — working language of prompts and reports
 
+crew:
+  # Where this crew's repository lives — the skills are installed elsewhere
+  # (~/.hermes/skills/, an agent's skill directory), so script paths are resolved against this.
+  repo: /abs/path/to/virtual-crew
+
 sources:
   script: sources/script.docx       # literary script (plot, dialogue, character bios)
   storyboard: sources/storyboard.docx  # shot table (shot no. / framing / camera / duration / sound)
