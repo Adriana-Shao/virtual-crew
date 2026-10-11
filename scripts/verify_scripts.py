@@ -160,7 +160,8 @@ try:
     open(img, "wb").write(base64.b64decode(
         "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=="))
     md2 = os.path.join(tmp, "img.md")
-    open(md2, "w", encoding="utf-8").write("before\n\n![Figure 1 — a caption](img.png)\n\nafter\n")
+    open(md2, "w", encoding="utf-8").write(
+        "before\n\n![Figure 1 — a caption that wraps\nacross two lines](img.png)\n\nafter\n")
     dx2 = MD.convert(md2, os.path.join(tmp, "img.docx"))
     with zipfile.ZipFile(dx2) as z:
         names2 = set(z.namelist())

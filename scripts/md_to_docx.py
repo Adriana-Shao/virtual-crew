@@ -132,13 +132,15 @@ def _unbalanced(text):
 
 
 def join_wrapped(lines):
-    """Merge a soft-wrapped emphasis span with the following line(s) — markdown allows
-    **bold** and *italic* to span a line break, and a per-line renderer would leak asterisks."""
+    """Merge a soft-wrapped span with the following line(s): markdown allows **bold**, *italic* and
+    ![caption](path) to span a line break, and a per-line renderer would leak the raw markup."""
     out, i = [], 0
     while i < len(lines):
         ln = lines[i]
         guard = 0
-        while ln.strip() and _unbalanced(ln) and i + 1 < len(lines) and lines[i + 1].strip() \
+        def _open(text):
+            return _unbalanced(text) or ("![" in text and not PNG_RE.search(text))
+        while ln.strip() and _open(ln) and i + 1 < len(lines) and lines[i + 1].strip() \
                 and not lines[i + 1].lstrip().startswith(("#", "|", ">", "!")) and guard < 6:
             i += 1
             guard += 1
