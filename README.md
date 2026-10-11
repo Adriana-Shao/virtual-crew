@@ -29,16 +29,18 @@ with the change list, and one row in the take log.
 
 ## Demo
 
-Same two commands the crew runs on every shot — a prompt as first written, the same prompt after the
-fix, the rework accounting, and the verification harness:
+The crew in use. The director asks for one shot's prompt and gets the continuity list, the plates to
+attach, the prompt and the QC report; then reports a problem in plain speech — *"the door is white
+and double, and the bag is missing"* — and gets a comparison report and prompt v2. The same checks
+also run as scripts in the terminal: the prompt linter before and after, the take log, `make verify`.
 
-![the prompt linter on a shot as first written: 11 defects, each with the rewrite, then the same shot
-clean](docs/figures/fig1-prompt-lint-before-after.png)
+![the crew answering a shot request: continuity list, the plates to attach, the prompt, the QC report](docs/figures/step1-agent-shot-prompt.jpg)
 
-![the take log after four takes: rework rounds, failure types and
-attribution](docs/figures/fig2-rework-accounting.png)
+![the QC report: 12 defects, each with the rewrite — then the same shot clean](docs/figures/step2-agent-qc-report.jpg)
 
-![make verify: 27 checks, exit 0](docs/figures/fig3-verification.png)
+![the comparison report after the director reports a problem: drift, attribution, prompt v2, and the logged take](docs/figures/step3-agent-comparison.jpg)
+
+![the scripts in the terminal: the prompt linter before and after, the take log, make verify — ALL PASS](docs/figures/step4-terminal-verify.jpg)
 
 ## The crew — seven skills
 
@@ -78,10 +80,6 @@ the floor, the water trail leading in from the threshold.
 The full document (identities written out to the face, variants carrying only the change, four
 directional views per location, props with standing rules) is at
 `examples/the-visitor/assets_prompts.md` — and it is the same format used in production.
-
-![the asset document the crew produces before any shot is written: identities written out to the
-face, variants carrying only the change, four directional views per location, props with standing
-rules](docs/figures/fig4-asset-document.png)
 
 ## The loop
 

@@ -1,8 +1,11 @@
-# Demo recording script (30 seconds)
+# Demo recording script
 
-**Output:** `assets/demo/crew-demo.mp4` (and a GIF `assets/demo/crew-demo.gif` for the README).
-**Prep:** one take, no narration needed — the captions are in the terminal output. Rehearse once with
-`bash scripts/demo_run.sh`, then record the same run.
+**Already captured:** the four screenshots in `docs/figures/` (`step1-agent-shot-prompt.jpg`,
+`step2-agent-qc-report.jpg`, `step3-agent-comparison.jpg`, `step4-terminal-verify.jpg`) — three from
+the crew in a session, one from the terminal. These are what the README and the case study use.
+
+**Optional extra:** a 30-second screen recording, if a moving demo is wanted for an interview.
+Record it by rehearsing once with `bash scripts/demo_run.sh`, then capturing the same run.
 
 ---
 
