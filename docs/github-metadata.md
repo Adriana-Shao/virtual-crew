@@ -18,7 +18,7 @@ continuity, storyboard, video-generation, qc, hermes-agent, claude-skills
 
 ## Website field (optional)
 
-Point it at the portfolio case study once it is rendered as a PDF, or leave the field empty.
+Leave empty, or point it at the film's page / your portfolio once you have a public URL.
 
 ## First release note (Releases → Draft a new release, tag v0.1.0)
 
@@ -29,8 +29,9 @@ v0.1.0 — first public cut of the crew.
   qc-reviewer, line-producer, ethics-gate
 - templates: asset document, prompt skeleton, watch-list, comparison report, world-state
 - scripts: build_project, extract_assets, md_to_docx, prompt_lint, shot_log (+ verify_scripts)
-- docs: portfolio case study; example project (fictional, sanitised) under examples/the-visitor
-- verification: `make verify` — 27 checks, exit 0 = pass
+- docs: work statement (one-pager) · example project (fictional, sanitised) under examples/the-visitor
+- four screenshots of the crew in use (three from a session, one from the terminal)
+- verification: `make verify` — 34 checks, exit 0 = pass
 ```
 
 ## Repository settings worth setting
