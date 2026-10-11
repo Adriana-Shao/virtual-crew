@@ -30,7 +30,7 @@ v0.1.0 — first public cut of the crew.
 - templates: asset document, prompt skeleton, watch-list, comparison report, world-state
 - scripts: build_project, extract_assets, md_to_docx, prompt_lint, shot_log (+ verify_scripts)
 - docs: portfolio case study; example project (fictional, sanitised) under examples/the-visitor
-- verification: `make verify` — 25 checks, exit 0 = pass
+- verification: `make verify` — 27 checks, exit 0 = pass
 ```
 
 ## Repository settings worth setting

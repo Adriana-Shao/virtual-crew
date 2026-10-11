@@ -138,6 +138,6 @@ production". The log is append-only, rejected takes included.
 
 - The crew: `virtual-crew` — five role skills, four templates, five scripts, and a fictional example
   project with a worked comparison report.
-- Verification: `make verify` (25 checks) and `make lint`, run in this repository.
+- Verification: `make verify` (27 checks) and `make lint`, run in this repository.
 - Evidence to add before submission: two or three before/after frame pairs (failed take vs approved
   take, cropped to the technical detail — a door form, a prop, a hand), and the filled cost table.

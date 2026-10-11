@@ -4,7 +4,7 @@
 把 AIGC 短片的工作流拆成剧组岗位，每个岗位做成一个可安装的 agent skill。
 
 ![license](https://img.shields.io/badge/license-MIT%20%2B%20CC%20BY--NC%204.0-blue)
-![verification](https://img.shields.io/badge/make%20verify-25%20checks-brightgreen)
+![verification](https://img.shields.io/badge/make%20verify-27%20checks-brightgreen)
 
 Most AI-film projects demo a model. This one documents the **method**: how a shot gets specified,
 checked, generated, inspected against a written contract, reworked, and archived — with the human
@@ -101,7 +101,7 @@ Makefile          make verify · make lint
 
 ```
 make lint      # py_compile every script
-make verify    # 25 checks: parsers, prompt linter severity, inventory attribution,
+make verify    # 27 checks: parsers, prompt linter severity, inventory attribution,
                # .docx package validity, take-log round-trip — exit 0 = pass
 ```
 

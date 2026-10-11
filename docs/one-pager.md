@@ -32,7 +32,7 @@ log that counts rework rounds, failure types and attribution.
 - **An empirical failure catalogue.** 15 entries, each paid for by a regenerated take, each carrying the wording that fixed it.
 - **Assets before shots.** Identities pin the face in detail; variants describe only the change and copy the uploaded identity plate; locations get four directional views so a room cannot change shape when the camera turns around.
 
-**Verification.** `make verify` — 25 checks over the parsers, the linter's severity logic, the .docx
+**Verification.** `make verify` — 27 checks over the parsers, the linter's severity logic, the .docx
 package and the take log; exit 0 = pass. This is ad-hoc verification, not a full test suite, and it is
 labelled as such.
 

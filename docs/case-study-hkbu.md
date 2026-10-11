@@ -70,7 +70,7 @@ Six Python scripts, standard library only, no `pip install`:
   failure-type ranking;
 - `verify_scripts.py` — the harness behind `make verify`.
 
-**Verification.** `make verify` runs 25 checks: synthetic-docx parsing, character extraction across
+**Verification.** `make verify` runs 27 checks: synthetic-docx parsing, character extraction across
 soft breaks, writer outputs, linter severity and case handling, the document package structure, CJK
 font configuration, and an append-only take-log round trip. It is labelled ad-hoc verification, not a
 test suite — it exercises the changed behaviour, not the space of inputs.
@@ -82,7 +82,7 @@ test suite — it exercises the changed behaviour, not the space of inputs.
 | Shots in the film | 210 across 18 scenes |
 | Asset prompts generated before shooting | 128 (13 identities, 14 variants, 76 four-direction location views, 25 props) |
 | Failure catalogue entries | 15, each traceable to a real failed take |
-| Verification checks | 25 (`make verify`) |
+| Verification checks | 27 (`make verify`) |
 | Mean takes per approved shot | `[TO FILL]` |
 | Rework rounds per approved shot | `[TO FILL]` |
 | Top failure types by takes lost | `[TO FILL]` |
@@ -102,7 +102,7 @@ the next improvement should be a rewritten clause, a different shot design, or a
 - **Human QC.** No automated vision check, by choice. This bounds throughput (the director is the
   bottleneck) and removes an obvious measurement channel; a local vision model could lift this without
   sending frames off-machine, and is a candidate next step.
-- **Ad-hoc verification.** 25 checks, not a suite; failure modes in the parsers' degenerate inputs are
+- **Ad-hoc verification.** 27 checks, not a suite; failure modes in the parsers' degenerate inputs are
   not exhausted.
 
 ## 7. What generalises, and next steps
