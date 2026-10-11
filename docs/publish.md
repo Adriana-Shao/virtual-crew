@@ -18,7 +18,8 @@ Confirm the figures are present: `ls docs/figures/` should list `step1-agent-sho
 - Sign in at github.com → **New repository**
 - Name: `virtual-crew` · Description and topics: copy from `docs/github-metadata.md`
 - **Do not** tick "Add a README / .gitignore / licence" — this repo already has them
-- Visibility: **Private** first. Flip to Public when you decide (Settings → General → Danger zone)
+- Visibility: **Private** first. Flip it to Public **before submitting the link** (Settings → General
+  → Danger zone → Change visibility).
 
 ## 2 · Push (one of two ways)
 
@@ -52,7 +53,7 @@ pitch, the four screenshots, the crew table, `make verify`. If the images do not
 
 ## 5 · What deliberately is NOT here
 
-- The real film's script, storyboard, generated clips and asset document (private, stays in the
-  project folder)
-- The application-specific case studies (they are submission material, not repository content)
-- Any API key, absolute path from your machine, or personal contact detail
+- The real film's script, storyboard, generated clips and asset document — those stay in the project
+  folder, never in the repository
+- Application paperwork (work statement, any document written for an admissions file)
+- Any API key, absolute path from the machine that built this, or personal contact detail
