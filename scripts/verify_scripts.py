@@ -174,6 +174,23 @@ try:
     check("docx: png content type declared",
           "image/png" in zipfile.ZipFile(dx2).read("[Content_Types].xml").decode())
 
+    # images: JPEG must embed too (the director's screenshots are .jpg)
+    jpg = os.path.join(tmp, "img.jpg")
+    open(jpg, "wb").write(base64.b64decode(
+        "/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIs"
+        "IxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAALCAABAAEBAREA/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAA"
+        "AAAAAAAAAAAAAAAAAAD/2gAIAQEAAD8AKp//2Q=="))
+    md3 = os.path.join(tmp, "img3.md")
+    open(md3, "w", encoding="utf-8").write("before\n\n![Figure 2 — jpeg](img.jpg)\n\nafter\n")
+    dx3 = MD.convert(md3, os.path.join(tmp, "img3.docx"))
+    with zipfile.ZipFile(dx3) as z:
+        names3 = set(z.namelist())
+        xml3 = z.read("word/document.xml").decode("utf-8")
+        ct3 = z.read("[Content_Types].xml").decode("utf-8")
+    check("docx: jpeg embedded as media part", "word/media/image1.jpg" in names3, str(sorted(names3)))
+    check("docx: jpeg drawing present", "<w:drawing>" in xml3 and "Figure 2 — jpeg" in xml3)
+    check("docx: jpeg content type declared", "image/jpeg" in ct3)
+
     # ── shot_log ─────────────────────────────────────────────────────────────
     log = os.path.join(tmp, "shot_log.csv")
     for take, outcome in ((1, "rejected"), (2, "rejected"), (3, "approved")):

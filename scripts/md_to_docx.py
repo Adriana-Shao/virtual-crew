@@ -21,6 +21,8 @@ CONTENT_TYPES = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
 <Default Extension="xml" ContentType="application/xml"/>
 <Default Extension="png" ContentType="image/png"/>
+<Default Extension="jpg" ContentType="image/jpeg"/>
+<Default Extension="jpeg" ContentType="image/jpeg"/>
 <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
 <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
 </Types>"""
@@ -67,14 +69,29 @@ def esc(t):
     return html.escape(t, quote=False)
 
 
-def png_size(path):
+def image_size(path):
+    """Width/height for PNG or JPEG, stdlib only. None if the format is unsupported/missing."""
     with open(path, "rb") as f:
-        head = f.read(33)
-    if head[:8] != b"\x89PNG\r\n\x1a\n":
-        return None
-    w = int.from_bytes(head[16:20], "big")
-    h = int.from_bytes(head[20:24], "big")
-    return w, h
+        head = f.read(4)
+    if head[:4] == b"\x89PNG":
+        with open(path, "rb") as f:
+            h = f.read(33)
+        return int.from_bytes(h[16:20], "big"), int.from_bytes(h[20:24], "big")
+    if head[:2] == b"\xff\xd8":                      # JPEG
+        data = open(path, "rb").read()
+        i = 2
+        while i < len(data) - 9:
+            if data[i] != 0xFF:
+                i += 1
+                continue
+            m = data[i + 1]
+            if m in (0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF):
+                return int.from_bytes(data[i + 7:i + 9], "big"), int.from_bytes(data[i + 5:i + 7], "big")
+            if m in (0xD8, 0xD9) or 0xD0 <= m <= 0xD7:
+                i += 2
+                continue
+            i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
+    return None
 
 
 def runs(text):
@@ -161,12 +178,13 @@ def convert(md_path, docx_path):
         if img and ln.strip().startswith("!["):
             caption, src = img.group(1), img.group(2)
             path = src if os.path.isabs(src) else os.path.join(base, src)
-            size = png_size(path) if os.path.exists(path) else None
+            size = image_size(path) if os.path.exists(path) else None
             if size:
                 w, h = size
                 cx = min(MAX_EMU, w * PX_EMU)
                 cy = int(cx * h / w)
-                fname = f"image{len(media) + 1}.png"
+                ext = (os.path.splitext(path)[1].lstrip(".") or "png").lower()
+                fname = f"image{len(media) + 1}.{ext}"
                 rid = f"rIdImg{len(media) + 1}"
                 media.append((fname, open(path, "rb").read()))
                 rels.append(f'<Relationship Id="{rid}" Type="http://schemas.openxmlformats.org/'
