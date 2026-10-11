@@ -41,5 +41,5 @@ labelled as such.
 
 ---
 
-*One page. Export to PDF from `docs/one-pager.docx` (or print to PDF). Fill the three `<...>` links
-before submitting.*
+**Note.** One page. Export to PDF from `docs/one-pager.docx` (or print to PDF). Fill the three
+`<...>` links before submitting.
