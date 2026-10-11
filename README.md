@@ -127,8 +127,8 @@ scripts/          build_project.py    parse script + storyboard → shotlist + w
 examples/         the-visitor/ — a small fictional project showing the data layer end to end:
                   script → shotlist → world_state → assets_prompts (11 prompts: identities, variants,
                   four location views, props) → a shot prompt → a comparison report → the take log
-docs/             one-pager.md (work statement) · demo-script.md · figures/ · github-metadata.md
-assets/           demo/ (screen recording — pending) · before-after/ (frame evidence — pending)
+docs/             one-pager.md · demo-script.md · publish.md · github-metadata.md · figures/ (screenshots)
+assets/           demo/ (optional screen recording) · before-after/ (frame evidence, add when available)
 Makefile          make verify · make lint
 ```
 
