@@ -108,6 +108,19 @@ try:
         rc = e.code
     check("lint: CLI exits 0 on a clean prompt", rc == 0, str(rc))
 
+    # risk aggregation: LOW-only items must not read as MEDIUM
+    low_only = "one source per shot; no second source; no flare in the eyes\nonly one bag\nlocked off; does not move\nno music, no subtitles; no flies"
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        try:
+            sys.argv = ["prompt_lint.py"]
+            open(os.path.join(tmp, "low.txt"), "w").write(low_only)
+            sys.argv = ["prompt_lint.py", os.path.join(tmp, "low.txt"), "--lang", "en"]
+            PL.main()
+        except SystemExit:
+            pass
+    check("lint: LOW-only prompt reports RISK: LOW", "RISK: LOW" in buf.getvalue(), buf.getvalue()[:80])
+
     # ── extract_assets ───────────────────────────────────────────────────────
     sc = [{"id": "sc1", "name": "x", "time": "夜", "place": "外",
            "shots": [{"n": "1", "content": "陈宇光着上身站在门边", "perf": ""},

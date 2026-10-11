@@ -118,7 +118,8 @@ def main():
     order = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
     issues.sort(key=lambda x: order[x[0]])
     high = sum(1 for i in issues if i[0] == "HIGH")
-    risk = "HIGH" if high else ("MEDIUM" if issues else "LOW")
+    med = sum(1 for i in issues if i[0] == "MEDIUM")
+    risk = "HIGH" if high else ("MEDIUM" if med else "LOW")
     print(f"PROMPT LINT — {args.prompt}   RISK: {risk}   ({len(issues)} items)")
     for sev, area, what, fix in issues:
         print(f"[{sev}] {area}: {what}")
