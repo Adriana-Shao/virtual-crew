@@ -36,7 +36,7 @@ log that counts rework rounds, failure types and attribution.
 package and the take log; exit 0 = pass. This is ad-hoc verification, not a full test suite, and it is
 labelled as such.
 
-**Links.** Repository: `<repo link>` · Case study (PDF): `docs/case-study.pdf` ·
+**Links.** Repository: `<repo link>` · Case study (PDF): `<case study link>` ·
 60-second walkthrough: `<video link>`
 
 ---

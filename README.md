@@ -125,7 +125,7 @@ scripts/          build_project.py    parse script + storyboard → shotlist + w
 examples/         the-visitor/ — a small fictional project showing the data layer end to end:
                   script → shotlist → world_state → assets_prompts (11 prompts: identities, variants,
                   four location views, props) → a shot prompt → a comparison report → the take log
-docs/             case-study.md (portfolio) · one-pager.md · demo-script.md · figures/ · github-metadata.md
+docs/             one-pager.md (work statement) · demo-script.md · figures/ · github-metadata.md
 assets/           demo/ (screen recording — pending) · before-after/ (frame evidence — pending)
 Makefile          make verify · make lint
 ```
@@ -189,5 +189,5 @@ take log. Everything it creates is deleted at the end.
 Code (`scripts/`) MIT. Documentation and skill text (`skills/`, `templates/`, `README.md`)
 CC BY-NC 4.0 — no commercial use. See `LICENSE`.
 
-Author: <author> · Portfolio case study: `docs/case-study.md`
+Author: Xinrui Shao · the portfolio case study is submitted separately (it is not part of this repo).
 If you cite this: “Virtual Crew — an agent crew for AI film production (2026)”.
